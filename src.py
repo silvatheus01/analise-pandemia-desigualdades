@@ -2,6 +2,7 @@ import basedosdados as bd
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import random
 
 PROJECT_ID = "base-dos-dados-395523"
 
@@ -165,38 +166,114 @@ PROJECT_ID = "base-dos-dados-395523"
 
 # df.to_csv('br_inep_indicadores_educacionais__uf.csv', index=False)
 
-df = pd.read_csv('br_inep_indicadores_educacionais__uf.csv')
+# df = pd.read_csv('br_inep_indicadores_educacionais__uf.csv')
 
-filtro = (df['localizacao'] == 'total') & (df['rede'] == 'total')
-df_filtrado = df[filtro]
+# filtro = (df['localizacao'] == 'total') & (df['rede'] == 'total')
+# df_filtrado = df[filtro]
 
-
-# df_filtrado_taxa_reprovacao = df_filtrado.filter(like='taxa_reprovacao_')
-# df_filtrado_had = df_filtrado.filter(like='had_')
 # df_filtrado_outros = df_filtrado.filter(items=['ano','sigla_uf','localizacao','rede']).sort_values('ano')
+# df_filtrado = pd.concat(
+#     [
+#         df_filtrado_outros,
+#         df_filtrado['taxa_reprovacao_em'], 
+#         df_filtrado['taxa_reprovacao_ef'], 
+#         df_filtrado['had_ef'],
+#         df_filtrado['had_em']
+#     ],
+#     axis=1
+# )
 
-#df_filtrado = pd.concat([df_filtrado_outros, df_filtrado_taxa_reprovacao, df_filtrado_had], axis=1)
-#df_filtrado.to_csv('br_inep_indicadores_educacionais__uf__tratado.csv')
+# df_filtrado.to_csv('br_inep_indicadores_educacionais__uf__tratado.csv', index=False)
 
-df_filtrado_outros = df_filtrado.filter(items=['ano','sigla_uf','localizacao','rede']).sort_values('ano')
-df_filtrado = pd.concat(
-    [
-        df_filtrado_outros,
-        df_filtrado['taxa_reprovacao_em'], 
-        df_filtrado['taxa_reprovacao_ef'], 
-        df_filtrado['had_ef'],
-        df_filtrado['had_em']
-    ],
-    axis=1
-)
+df = pd.read_csv('br_inep_indicadores_educacionais__uf__tratado.csv')
 
-df_filtrado.to_csv('br_inep_indicadores_educacionais__uf__tratado.csv', index=False)
- 
-# anos = [2018,2019,2020,2021,2022]
-# df = pd.read_csv('br_inep_indicadores_educacionais__uf__tratado.csv')
-# filtro = (df['ano'] == 2021) & (df['sigla_uf'] == 'BA')
-# df = df[filtro]
+anos = [2018,2019,2020,2021,2022]
+ufs = df['sigla_uf'].unique()
+series = {
+    'ef':'Ensino Fundamental', 
+    'em': 'Ensino Médio'
+}
+cores = [
+  '#FF0000',
+  '#00FF00',
+  '#0000FF',
+  '#FFFF00',
+  '#00FFFF',
+  '#FF00FF',
+  '#990000',
+  '#009900',
+  '#000099',
+  '#999900',
+  '#009999',
+  '#990099',
+  '#CC0000',
+  '#00CC00',
+  '#0000CC',
+  '#CCCC00',
+  '#00CCCC',
+  '#CC00CC',
+  '#660000',
+  '#006600',
+  '#000066',
+  '#666600',
+  '#006666',
+  '#660066',
+  '#330000',
+  '#003300',
+  '#000033',
+  '#333300',
+  '#003333',
+  '#330033',
+  '#110000',
+  '#001100',
+  '#000011',
+  '#111100',
+  '#001111',
+  '#110011',
+]
 
-# df_filtrado_taxa_reprovacao = df.filter(like='taxa_reprovacao_')
+def inverter_cor(cor):
+    if cor.startswith("#") and len(cor) == 7:
+        r = cor[1:3]
+        g = cor[3:5]
+        b = cor[5:7]
+        cor_invertida = f"#{255 - int(r, 16):02X}{255 - int(g, 16):02X}{255 - int(b, 16):02X}"
+        return cor_invertida
+    else:
+        return None
 
-# print(df[np.isnan(df['taxa_reprovacao_ef']) == False])
+
+cor_branca = int('FFFFFF', 16)
+
+for ano in anos:
+    for serie_key, serie in series.items(): 
+        plt.figure(figsize=(30, 10))
+
+        num_rotulos = 20
+        for i,uf in enumerate(ufs):
+            filtro = (df['ano'] == ano) & (df['sigla_uf'] == uf)
+            df_filtrado = df[filtro]
+            taxa_reprovacao = df_filtrado[f'taxa_reprovacao_{serie_key}']
+            had = df_filtrado[f'had_{serie_key}']
+
+            plt.scatter(taxa_reprovacao, had, color=cores[i], s = 1000)
+            plt.annotate(uf, (taxa_reprovacao, had), fontsize=20, annotation_clip=False, arrowprops=dict(arrowstyle='->'), ha='center', va='center', color=inverter_cor(cores[i]))
+        
+        plt.xticks(fontsize=15)
+        plt.yticks(fontsize=15)
+        plt.title(f'Gráfico de dispersão - {serie} - {ano}', fontsize=30)
+        plt.xlabel('Taxa de reprovação', fontsize=20) 
+        plt.ylabel('Média de Horas-Aula diária', fontsize=20) 
+        plt.legend(ufs, fontsize=15, ncol=3, labelspacing=1.5, loc='upper right', bbox_to_anchor=(1.1, 1.1))
+        
+        plt.savefig(f'dispersao_{serie_key}_{ano}')
+        plt.clf()
+            
+
+        
+
+df = df[filtro]
+
+df_filtrado_taxa_reprovacao = df.filter(like='taxa_reprovacao_')
+
+print(df[np.isnan(df['taxa_reprovacao_ef']) == False])
