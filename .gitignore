@@ -2,3 +2,4 @@
 /venv
 **.xlsx#
 **.csv#
+/microdados_**
