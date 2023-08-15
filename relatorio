@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\title{Desigualdades na educação durante a Pandemia da COVID-19}
+\author{Matheus Silva}
+\date{August 2023}
+
+\begin{document}
+
+\maketitle
+
+\section{Introdução}
+Durante a pandemia, universitários da UFRJ --- em particular, os alunos da área de exatas --- perceberam a oportunidade de se saírem melhor em algumas matérias, devido ao ensino à distância. Como no ensino presencial muitas das matérias exigiam a realização de provas difíceis para alcançar a aprovação, muitos destes alunos viram no ensino remoto, através dos trabalhos e do tempo mais flexível, a chance de alcançar não apenas a aprovação nas matérias, mas também de notas maiores, alcançando assim a conclusão do seu curso rapidamente. 
+
+Contudo, alguns universitários se depararam com algumas dificuldades durante esse período. Como o ensino remoto depende de ferramentas tecnológicas, como os computadores, para conectar o aluno à sua sala de aula virtual, muitos não conseguiram acompanhar as aulas inicialmente, já que não possuíam tais ferramentas. Esse fato leva ao surgimento de algumas perguntas: Esse comportamento foi visto em outros tipos de ensino também, como o ensino fundamental e o ensino médio? Além disso, alguns estados do Brasil não obtiveram um bom desempenho, na área da educação, durante os anos da pandemia? A pandemia gerou uma maior desproporção entre as redes particular e pública do Brasil? Através da utilização de dados abertos, responderemos essas perguntas. 
+
+\section{Análise dos dados}
+\subsection{Taxa de aprovação}
+Uma taxa importante para entendermos o rendimento dos alunos, é o total de aprovações. Para isso, vamos utilizar os dados do Índice de Desenvolvimento da Educação Básica, o Ideb. Neste índice, são consolidados em um único medidor os desfechos de dois conceitos de igual relevância para a excelência do ensino: a progressão dos estudantes ao longo do percurso escolar e as médias de rendimento alcançadas nas avaliações. Esse índice é calculado a cada dois anos através dos resultados da Prova Brasil e do Sistema de Avaliação da Educação Básica (Saeb). 
+
+Em 2021, durante a pandemia, percebemos que a diferença entre a taxa de aprovação entre as redes pública e particular, no ensino médio, foi de $8,7$, enquanto a mesma média entre os anos de 2017 e 2019, foi de $13$. Isso fortalece o fato de que a desigualdade entre a rede pública e particular no Brasil, foi pequena durante a pandemia, já que a diferença entre as taxas de aprovação das redes pública e particular em 2021, não foi maior do que a média das diferenças dos anos anteriores à COVID-19. 
+
+
+
+
+
+
+
+
+
+
+
+\section{Referencias}
+- https://basedosdados.org/dataset/96eab476-5d30-459b-82be-f888d4d0d6b9?table=bc84dea9-1126-4423-86d2-8835e6b19a72
+
+- http://portal.mec.gov.br/component/tags/tag/indice-de-desenvolvimento-da-educacao-basica
+    
+\end{document}
+
