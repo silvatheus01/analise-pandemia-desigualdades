@@ -34,12 +34,12 @@ def gerar_tabela_diferencas_taxas_aprovacao():
             resultado_2021 = diferenca_taxas
 
     plt.box(on=None)
-    plt.suptitle('Diferença entre as taxas de aprovação das redes pública e privada')
+    plt.suptitle('Diferença entre as taxas de aprovação das redes pública e privada no Ensino Médio', fontsize=10)
     the_table = plt.table(
         cellText=[["{0:.2f}".format(resultado_2021), np.mean(resultados_outros_anos)]],
         colLabels=['2021', 'Média dos anos 2017 e 2019'],
         loc='center',
-        colWidths=[0.3,0.4]
+        colWidths=[0.1,0.4]
     )
 
     ax = plt.gca()
