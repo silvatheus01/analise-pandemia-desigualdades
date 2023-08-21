@@ -3,3 +3,4 @@
 **.xlsx#
 **.csv#
 /microdados_**
+**/__pycache__
