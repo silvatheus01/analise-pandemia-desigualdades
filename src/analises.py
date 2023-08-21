@@ -34,7 +34,6 @@ def gerar_tabela_diferencas_taxas_aprovacao():
             resultado_2021 = diferenca_taxas
 
     plt.box(on=None)
-    plt.suptitle('Diferença entre as taxas de aprovação das redes pública e privada no Ensino Médio', fontsize=10)
     the_table = plt.table(
         cellText=[["{0:.2f}".format(resultado_2021), np.mean(resultados_outros_anos)]],
         colLabels=['2021', 'Média dos anos 2017 e 2019'],
@@ -50,7 +49,7 @@ def gerar_tabela_diferencas_taxas_aprovacao():
     the_table.set_fontsize(12)
     the_table.scale(1.5, 2.3)
 
-    plt.savefig(f'{DIR_GRAFICOS_TABELA}/diferencas')
+    plt.savefig(f'{DIR_GRAFICOS_TABELA}/diferencas_taxas_aprovacao')
     plt.clf()
 
 def gerar_tabela_media_taxas_aprovacao():
@@ -80,7 +79,6 @@ def gerar_tabela_media_taxas_aprovacao():
 
 
     plt.box(on=None)
-    plt.suptitle('Média das taxas de aprovação das redes pública e privada por ano')
     the_table = plt.table(
         cellText=[["{0:.2f}".format(media)] for media in medias],
         colLabels=['Média (%)'],
@@ -97,33 +95,33 @@ def gerar_tabela_media_taxas_aprovacao():
     the_table.set_fontsize(12)
 
     the_table.scale(1.5, 2.3)
-    plt.savefig(f'{DIR_GRAFICOS_TABELA}/medias')
+    plt.savefig(f'{DIR_GRAFICOS_TABELA}/medias_taxas_aprovacao')
 
 def gerar_graficos_taxa_abandono():
     if not os.path.exists(PATH_INDICADORES_BRASIL_TRATADO):
         baixar_dados_indicadores_brasil()
 
     df = pd.read_csv(PATH_INDICADORES_BRASIL_TRATADO)
-    taxas_abandono = {
-        'taxa_abandono_ef':'Ensino Fundamental', 
-        'taxa_abandono_ef_anos_iniciais':'Ensino Fundamental Anos Iniciais', 
-        'taxa_abandono_ef_anos_finais':'Ensino Fundamental Anos Finais',
-        'taxa_abandono_ef_1_ano':'Ensino Fundamental - 1º ano', 
-        'taxa_abandono_ef_2_ano':'Ensino Fundamental - 2º ano', 
-        'taxa_abandono_ef_3_ano':'Ensino Fundamental - 3º ano',
-        'taxa_abandono_ef_4_ano':'Ensino Fundamental - 4º ano', 
-        'taxa_abandono_ef_5_ano':'Ensino Fundamental - 5º ano' ,
-        'taxa_abandono_ef_6_ano':'Ensino Fundamental - 6º ano',
-        'taxa_abandono_ef_7_ano':'Ensino Fundamental - 7º ano', 
-        'taxa_abandono_ef_8_ano':'Ensino Fundamental - 8º ano', 
-        'taxa_abandono_ef_9_ano':'Ensino Fundamental - 9º ano',
-        'taxa_abandono_em':'Ensino Médio', 
-        'taxa_abandono_em_1_ano':'Ensino Médio - 1º ano',
-        'taxa_abandono_em_2_ano':'Ensino Médio - 2º ano',
-        'taxa_abandono_em_3_ano':'Ensino Médio - 3º ano', 
-        'taxa_abandono_em_4_ano':'Ensino Médio - 4º ano' , 
-        'taxa_abandono_em_nao_seriado':'Ensino Médio Não seriado'
-    }
+    taxas_abandono = [
+        'taxa_abandono_ef', 
+        'taxa_abandono_ef_anos_iniciais', 
+        'taxa_abandono_ef_anos_finais',
+        'taxa_abandono_ef_1_ano', 
+        'taxa_abandono_ef_2_ano', 
+        'taxa_abandono_ef_3_ano',
+        'taxa_abandono_ef_4_ano', 
+        'taxa_abandono_ef_5_ano',
+        'taxa_abandono_ef_6_ano',
+        'taxa_abandono_ef_7_ano', 
+        'taxa_abandono_ef_8_ano', 
+        'taxa_abandono_ef_9_ano',
+        'taxa_abandono_em', 
+        'taxa_abandono_em_1_ano',
+        'taxa_abandono_em_2_ano',
+        'taxa_abandono_em_3_ano', 
+        'taxa_abandono_em_4_ano', 
+        'taxa_abandono_em_nao_seriado'
+    ]
 
     anos = [2018,2019,2020,2021]
     barWidth = 0.25
@@ -133,7 +131,7 @@ def gerar_graficos_taxa_abandono():
         by_label = dict(zip(labels, handles))
         figure.legend(by_label.values(), by_label.keys())
 
-    for taxa, label in taxas_abandono.items():
+    for taxa in taxas_abandono:
         posicoes = []
         plt.figure(figsize=(9, 5))
         for i, ano in enumerate(anos):
@@ -154,11 +152,9 @@ def gerar_graficos_taxa_abandono():
             plt.bar(posicao_publica, dados_abandono_publica, color= '#59ed1f', width=barWidth, label='pública')
 
             plt.xlabel('Anos')
-
         
         plt.xticks(posicoes, anos)
         plt.ylabel('Taxa de abandono (%)')
-        plt.title(f'Taxas de abandono por ano nas redes pública e privada | {label}')
         plt.ylim((0,12))
 
         legend_without_duplicate_labels(plt)
@@ -173,10 +169,7 @@ def gerar_graficos_reprovacao_horas():
 
     anos = [2018,2019,2020,2021]
     ufs = df['sigla_uf'].unique()
-    series = {
-        'ef':'Ensino Fundamental', 
-        'em': 'Ensino Médio'
-    }
+    series = ['ef', 'em']
     cores = [
         '#FF0000',
         '#00FF00',
@@ -227,15 +220,14 @@ def gerar_graficos_reprovacao_horas():
             return None
 
     for ano in anos:
-        for serie_key, serie in series.items(): 
-
+        for serie in series: 
             plt.figure(figsize=(30, 10))
             
             for i,uf in enumerate(ufs):
                 filtro = (df['ano'] == ano) & (df['sigla_uf'] == uf)
                 df_filtrado = df[filtro]
-                taxa_reprovacao = df_filtrado[f'taxa_reprovacao_{serie_key}']
-                had = df_filtrado[f'had_{serie_key}']
+                taxa_reprovacao = df_filtrado[f'taxa_reprovacao_{serie}']
+                had = df_filtrado[f'had_{serie}']
 
                 plt.scatter(taxa_reprovacao, had, color=cores[i], s = 1000)
                 plt.annotate(
@@ -254,7 +246,6 @@ def gerar_graficos_reprovacao_horas():
             plt.yticks(fontsize=15)
             plt.ylim((3,8))
             plt.xlim((0,22))
-            plt.title(f'Gráfico de dispersão | {serie} - {ano}', fontsize=30)
             plt.xlabel('Taxa de reprovação (%)', fontsize=20) 
             plt.ylabel('Média de Horas-Aula diária', fontsize=20) 
             plt.legend(
@@ -266,5 +257,5 @@ def gerar_graficos_reprovacao_horas():
                 bbox_to_anchor=(1.1, 1.1)
             )
             
-            plt.savefig(f'{DIR_GRAFICOS_DISPERSAO}/reprovacao_x_horas_aula_{serie_key}_{ano}')
+            plt.savefig(f'{DIR_GRAFICOS_DISPERSAO}/reprovacao_x_horas_aula_{serie}_{ano}')
             plt.clf()
